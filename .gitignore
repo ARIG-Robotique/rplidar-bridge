@@ -1,29 +1,7 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Idea project files
+.idea/
+*.iml
 
-# Precompiled Headers
-*.gch
-*.pch
+# Project build directory
+build/
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
