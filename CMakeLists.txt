@@ -4,7 +4,7 @@
 # Description: Build du bridge par socket pour le RPLidar                     #
 #=============================================================================#
 # Contrôle de la version minimale de CMake
-cmake_minimum_required(VERSION 3.4)
+cmake_minimum_required(VERSION 3.2.2)
 
 # Variable de build
 set(RPLIDAR_SDK_DIR    "download/rplidar_sdk/sdk")
