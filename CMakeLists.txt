@@ -6,20 +6,21 @@
 # Contrôle de la version minimale de CMake
 cmake_minimum_required(VERSION 3.4)
 
-# Compilateur flags
-#set(ARDUINO_C_FLAGS      "-ffunction-sections -fdata-sections")
-#set(ARDUINO_CXX_FLAGS    "${ARDUINO_C_FLAGS} -fno-exceptions")
-#set(ARDUINO_LINKER_FLAGS "-Wl,--gc-sections")
-
-#set(ARDUINO_CXX_FLAGS    "-std=c++11")
+# Variable de build
+set(RPLIDAR_SDK_DIR    "download/rplidar_sdk/sdk")
 
 #====================================================================#
 #  Setup Project                                                     #
 #====================================================================#
 project(RPLidarBridge)
 
-# Récupération des sources
+# Récupération de la définition de la lib externe RPLidar
+include_directories(${RPLIDAR_SDK_DIR}/sdk/include/)
+link_directories(${RPLIDAR_SDK_DIR}/output/Linux/Release)
+
+# Récupération des sources du projets
 file(GLOB SRCS "src/*.cpp")
 file(GLOB HEADERS "include/*.h")
 
 add_executable(rplidar-bridge ${SRCS} ${HEADERS})
+target_link_libraries(rplidar-bridge rplidar_sdk pthread)
