@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Author : Gregory DEPUILLE
 # Description : Wrapper pour la configuration et le build du projet
+PROJECT="ARIG C++ RPLidar Bridge"
 
 ROOT_DIR=$(pwd)
 BUILD_DIR=$ROOT_DIR/build
@@ -10,12 +11,7 @@ RPLIDAR_SDK_VERSION=1.5.7
 RPLIDAR_SDK_DIR=rplidar_sdk
 RPLIDAR_FILENAME=${RPLIDAR_SDK_DIR}_v${RPLIDAR_SDK_VERSION}
 
-echo "Configuration du projet ARIG C++ RPLidar Bridge"
-
-if [ ! -d "$BUILD_DIR" ] ; then
-    echo "-- Création du répertoire de build $BUILD_DIR"
-    mkdir -p $BUILD_DIR
-fi
+echo "Configuration du projet $PROJECT"
 if [ ! -d "$DOWNLOAD_DIR" ] ; then
     echo "-- Création du répertoire de download $DOWNLOAD_DIR"
     mkdir -p $DOWNLOAD_DIR
@@ -33,23 +29,26 @@ echo "-- Build des dépendances externe"
 if [ -d "$RPLIDAR_SDK_DIR" ] ; then
   echo "---- Build RPLidar SDK $RPLIDAR_SDK_VERSION ..."
   cd $DOWNLOAD_DIR/$RPLIDAR_SDK_DIR/sdk/sdk/
-  make
+  make || exit 1
 else
   echo "-- ERROR : RPLidar SDK $RPLIDAR_SDK_VERSION manquant !!"
   exit 1
 fi
 
-cd $ROOT_DIR
+echo "-- Configuration du build du projet $PROJECT"
 
-echo "-- Configuration du build du projet"
+
+echo "---- Création du répertoire de build $BUILD_DIR"
+rm -Rf $BUILD_DIR
+mkdir -p $BUILD_DIR
+
 cd $BUILD_DIR
-cmake .. -Wno-dev -G "Unix Makefiles"
+echo "---- Download des dépendances Conan dependency manager"
+conan install ../ || exit 1
 
-cd $ROOT_DIR
 echo "Configuration terminé"
 
-echo "Build du projet ARIG C++ RPLidar Bridge"
+echo "Build du projet $PROJECT"
 cd $BUILD_DIR
-make
-
+conan build .. || exit 1
 echo "Build terminé"

@@ -7,7 +7,7 @@
 cmake_minimum_required(VERSION 3.2.2)
 
 # Variable de build
-set(RPLIDAR_SDK_DIR    "download/rplidar_sdk/sdk")
+#set(RPLIDAR_SDK_DIR    "download/rplidar_sdk/sdk")
 
 #====================================================================#
 #  Setup Project                                                     #
@@ -15,12 +15,16 @@ set(RPLIDAR_SDK_DIR    "download/rplidar_sdk/sdk")
 project(RPLidarBridge)
 
 # Récupération de la définition de la lib externe RPLidar
-include_directories(${RPLIDAR_SDK_DIR}/sdk/include/)
-link_directories(${RPLIDAR_SDK_DIR}/output/Linux/Release)
+#include_directories(${RPLIDAR_SDK_DIR}/sdk/include/)
+#link_directories(${RPLIDAR_SDK_DIR}/output/Linux/Release)
+
+# Inclusion des dépendances géré par Conan
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup()
 
 # Récupération des sources du projets
 file(GLOB SRCS "src/*.cpp")
-file(GLOB HEADERS "include/*.h")
+file(GLOB HEADERS "src/*.h")
 
 add_executable(rplidar-bridge ${SRCS} ${HEADERS})
-target_link_libraries(rplidar-bridge rplidar_sdk pthread)
+target_link_libraries(rplidar-bridge rplidar_sdk ${CONAN_LIBS})
