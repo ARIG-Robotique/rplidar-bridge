@@ -4,6 +4,7 @@
 
 # Project build directory
 build/
+build-debug/
 download/
 conan/
 *.pyc
