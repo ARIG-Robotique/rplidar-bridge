@@ -1,15 +1,40 @@
 /* RPLIDAR Bridge Application */
+#include "SocketHelper.h"
+#include "RPLidarHelper.h"
 
-#include "sockethelper.h"
+#include <json.hpp>
 
-int main(int argc, const char * argv[]) {
-  SocketHelper socket;
-  socket.init();
+// for convenience
+using json = nlohmann::json;
 
-  socket.connect();
-  socket.response("Salut toi !");
+int main(int argc, const char *argv[]) {
+    SocketHelper socket;
+    RPLidarHelper lidar;
 
-  socket.end();
+    // Initialisation RPLidar
+    lidar.init();
 
-  return 0;
+    // Initialisation de la socket et attente de connexion.
+    socket.init();
+    socket.waitConnection();
+
+    bool stop = false;
+    while (!stop) {
+        string input = socket.getQuery();
+        cout << "From client : " << input << endl;
+
+        json v = json::parse(input.c_str());
+
+        if (v["id"] == 1) {
+            socket.sendResponse("1");
+        } else if (v["id"] == -1) {
+            stop = true;
+        } else {
+            socket.sendResponse("Salut toi !");
+        }
+    }
+
+    socket.end();
+
+    return 0;
 }

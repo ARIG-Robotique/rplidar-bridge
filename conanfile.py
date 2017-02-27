@@ -3,7 +3,7 @@ from conans import ConanFile, CMake
 class RPLidarBridgeConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     requires = (
-        "jsoncpp/1.7.7@theirix/stable",
+        "json/1.0.0@paulobrizolara/stable",
         "RPLidarSDK/1.5.7@gdepuille/stable"
     )
     generators = "cmake"

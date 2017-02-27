@@ -32,4 +32,4 @@ file(GLOB SRCS "src/*.cpp")
 file(GLOB HEADERS "src/*.h")
 
 add_executable(${PROJECT_NAME} ${SRCS} ${HEADERS})
-target_link_libraries(${PROJECT_NAME} rplidar_sdk ${CONAN_LIBS})
+target_link_libraries(${PROJECT_NAME} rplidar_sdk pthread ${CONAN_LIBS})

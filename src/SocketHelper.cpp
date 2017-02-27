@@ -1,4 +1,8 @@
-#include "sockethelper.h"
+#include "SocketHelper.h"
+
+#include <iostream>
+#include <arpa/inet.h>
+#include <memory.h>
 
 SocketHelper::SocketHelper(int port, int backlogQueue) {
     this->port = port;
@@ -30,7 +34,7 @@ void SocketHelper::init() {
     // and the length of the address structure
     // This bind() call will bind the socket to the current IP address on port, portno
     if (bind(serverSockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
-        cout << "ERROR on binding" << endl;
+        cerr << "ERROR on binding" << endl;
         exit(1);
     }
 
@@ -40,7 +44,7 @@ void SocketHelper::init() {
     listen(serverSockfd, backlogQueue);
 }
 
-const char * SocketHelper::connect() {
+void SocketHelper::waitConnection() {
     // The accept() call actually accepts an incoming connection
     clilen = sizeof(cli_addr);
 
@@ -52,23 +56,24 @@ const char * SocketHelper::connect() {
     // communicating with the connected client.
     clientSockfd = accept(serverSockfd, (struct sockaddr *) &cli_addr, &clilen);
     if (clientSockfd < 0) {
-        cout << "ERROR on accept" << endl;
+        cerr << "ERROR on accept" << endl;
         exit(2);
     }
+    cout << "Server: got connection from " << inet_ntoa(cli_addr.sin_addr) << ":" << ntohs(cli_addr.sin_port) << endl;
+}
 
-    cout << "Server: got connection from " << inet_ntoa(cli_addr.sin_addr) <<  ":" << ntohs(cli_addr.sin_port) << endl;
-
+string SocketHelper::getQuery(void) {
     char buffer[256];
     bzero(buffer, 256);
     if (read(clientSockfd, buffer, 255) < 0) {
-        cout << "ERROR Reading from socket" << endl;
+        cerr << "ERROR Reading from socket" << endl;
     }
     return buffer;
 }
 
-void SocketHelper::response(const char * response) {
-    send(clientSockfd, response, sizeof(response), 0);
-    close(clientSockfd);
+void SocketHelper::sendResponse(string response) {
+    const char * datas = response.c_str();
+    send(clientSockfd, datas, sizeof(datas), 0);
 }
 
 void SocketHelper::end() {
