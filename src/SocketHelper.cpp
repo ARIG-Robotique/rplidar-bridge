@@ -70,12 +70,23 @@ JsonQuery SocketHelper::getQuery(void) {
     if (read(clientSockfd, buffer, 255) < 0) {
         cerr << "ERROR Reading from socket" << endl;
     }
-    json jsonValue = json::parse(buffer);
-    cout << "Query from client : " << jsonValue.dump(2) << endl;
 
     JsonQuery q;
-    q.action = jsonValue["action"];
-    q.datas = jsonValue["datas"];
+    // Controle que le premier caractère n'est pas null, \r ou \n
+    if (buffer[0] != 0 && buffer[0] != 10 && buffer[0] != 13) {
+        try {
+            json jsonValue = json::parse(buffer);
+            cout << "Query from client : " << jsonValue.dump(2) << endl;
+            q.action = jsonValue["action"];
+            q.datas = jsonValue["datas"];
+        } catch (const exception & e) {
+            cerr << "Erreur de lecture du JSON : " << e.what() << endl;
+            q.action = "UNPARSABLE";
+        }
+    } else {
+        cerr << "Empty query from client" << endl;
+        q.action = "DATA_INVALID";
+    }
 
     return q;
 }

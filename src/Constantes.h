@@ -11,11 +11,9 @@ using json = nlohmann::json;
 
 #define DEVICE_INFO "DEVICE_INFO"
 #define HEALTH_INFO "HEALTH_INFO"
-#define START_MOTOR "START_MOTOR"
-#define STOP_MOTOR  "STOP_MOTOR"
-#define SET_SPEED   "SET_SPEED"
 #define START_SCAN  "START_SCAN"
-#define STOP_SCAN   "STOP_SCAN"
+#define SET_SPEED   "SET_SPEED"
+#define GRAB_DATA   "GRAB_DATA"
 
 #define EXIT        "EXIT"
 

@@ -23,8 +23,17 @@ int main(int argc, const char *argv[]) {
         } else if (query.action == HEALTH_INFO) {
             result = lidar.getHealth();
 
+        } else if (query.action == START_SCAN) {
+            result = lidar.startScan(query);
+
+        } else if (query.action == SET_SPEED) {
+            result = lidar.setMotorSpeed(query);
+
+        } else if (query.action == GRAB_DATA) {
+            result = lidar.grabScanData();
+
         } else if (query.action == EXIT) {
-            cout << "Demande d'arret du programe";
+            cout << "Demande d'arret du programe" << endl;
             result.status = RESPONSE_OK;
             stop = true;
 
@@ -32,6 +41,8 @@ int main(int argc, const char *argv[]) {
             result.status = RESPONSE_ERROR;
             result.errorMessage = "Action non supporté";
         }
+
+        result.action = query.action;
         socket.sendResponse(result);
     }
 

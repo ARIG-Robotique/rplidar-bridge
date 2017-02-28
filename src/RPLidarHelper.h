@@ -9,6 +9,11 @@
 #include <rplidar.h>
 #include "Constantes.h"
 
+#ifndef _countof
+#define _countof(_Array) (int)(sizeof(_Array) / sizeof(_Array[0]))
+#endif
+
+
 using namespace std;
 using namespace rp::standalone::rplidar;
 
@@ -22,8 +27,8 @@ public:
     JsonResult getDeviceInfo();
     JsonResult getHealth();
 
-    void startMotor(int speed = DEFAULT_MOTOR_PWM);
-    void setMotorSpeed(int speed = DEFAULT_MOTOR_PWM);
+    JsonResult startScan(JsonQuery q);
+    JsonResult setMotorSpeed(JsonQuery q);
 
     JsonResult grabScanData();
 
@@ -35,6 +40,7 @@ private:
 
     RPlidarDriver * driver;
 
+    void setMotorSpeed(_u16 speed);
 };
 
 
