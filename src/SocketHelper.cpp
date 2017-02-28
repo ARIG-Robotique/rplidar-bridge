@@ -1,8 +1,10 @@
 #include "SocketHelper.h"
 
-#include <iostream>
+#include <unistd.h>
 #include <arpa/inet.h>
 #include <memory.h>
+
+using namespace std;
 
 SocketHelper::SocketHelper(int port, int backlogQueue) {
     this->port = port;
@@ -62,18 +64,33 @@ void SocketHelper::waitConnection() {
     cout << "Server: got connection from " << inet_ntoa(cli_addr.sin_addr) << ":" << ntohs(cli_addr.sin_port) << endl;
 }
 
-string SocketHelper::getQuery(void) {
+JsonQuery SocketHelper::getQuery(void) {
     char buffer[256];
     bzero(buffer, 256);
     if (read(clientSockfd, buffer, 255) < 0) {
         cerr << "ERROR Reading from socket" << endl;
     }
-    return buffer;
+    json jsonValue = json::parse(buffer);
+    cout << "Query from client : " << jsonValue.dump(2) << endl;
+
+    JsonQuery q;
+    q.action = jsonValue["action"];
+    q.datas = jsonValue["datas"];
+
+    return q;
 }
 
-void SocketHelper::sendResponse(string response) {
-    const char * datas = response.c_str();
-    send(clientSockfd, datas, sizeof(datas), 0);
+void SocketHelper::sendResponse(JsonResult response) {
+    json r;
+    r["status"] = response.status;
+    r["action"] = response.action;
+    r["errorMessage"] = response.errorMessage;
+    r["datas"] = response.datas;
+
+    cout << "Response to client : " << r.dump(2) << endl;
+
+    string str = r.dump();
+    send(clientSockfd, str.c_str(), str.length(), 0);
 }
 
 void SocketHelper::end() {

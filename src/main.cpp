@@ -2,11 +2,6 @@
 #include "SocketHelper.h"
 #include "RPLidarHelper.h"
 
-#include <json.hpp>
-
-// for convenience
-using json = nlohmann::json;
-
 int main(int argc, const char *argv[]) {
     SocketHelper socket;
     RPLidarHelper lidar;
@@ -20,21 +15,31 @@ int main(int argc, const char *argv[]) {
 
     bool stop = false;
     while (!stop) {
-        string input = socket.getQuery();
-        cout << "From client : " << input << endl;
+        JsonQuery query = socket.getQuery();
+        JsonResult result;
+        if (query.action == DEVICE_INFO) {
+            result = lidar.getDeviceInfo();
 
-        json v = json::parse(input.c_str());
+        } else if (query.action == HEALTH_INFO) {
+            result = lidar.getHealth();
 
-        if (v["id"] == 1) {
-            socket.sendResponse("1");
-        } else if (v["id"] == -1) {
+        } else if (query.action == EXIT) {
+            cout << "Demande d'arret du programe";
+            result.status = RESPONSE_OK;
             stop = true;
+
         } else {
-            socket.sendResponse("Salut toi !");
+            result.status = RESPONSE_ERROR;
+            result.errorMessage = "Action non supporté";
         }
+        socket.sendResponse(result);
     }
 
+    // Fermeture de la socket
     socket.end();
+
+    // Arret du lidar
+    lidar.end();
 
     return 0;
 }

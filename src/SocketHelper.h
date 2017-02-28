@@ -1,11 +1,8 @@
 #ifndef SOCKETHELPER_H
 #define SOCKETHELPER_H
 
-#include <unistd.h>
-#include <string>
+#include "Constantes.h"
 #include <netinet/in.h>
-
-using namespace std;
 
 class SocketHelper {
 
@@ -16,9 +13,8 @@ public:
 
     void waitConnection();
 
-    string getQuery(void);
-
-    void sendResponse(string response);
+    JsonQuery getQuery(void);
+    void sendResponse(JsonResult response);
 
     void end();
 

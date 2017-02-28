@@ -7,6 +7,7 @@
 
 #include <string>
 #include <rplidar.h>
+#include "Constantes.h"
 
 using namespace std;
 using namespace rp::standalone::rplidar;
@@ -17,6 +18,16 @@ public:
     RPLidarHelper(string comFile = "/dev/ttyUSB0", unsigned int baudrate = 115200);
 
     void init();
+
+    JsonResult getDeviceInfo();
+    JsonResult getHealth();
+
+    void startMotor(int speed = DEFAULT_MOTOR_PWM);
+    void setMotorSpeed(int speed = DEFAULT_MOTOR_PWM);
+
+    JsonResult grabScanData();
+
+    void end();
 
 private:
     string comFile;
