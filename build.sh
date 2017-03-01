@@ -11,6 +11,9 @@ RPLIDAR_SDK_VERSION=1.5.7
 RPLIDAR_SDK_DIR=rplidar_sdk
 RPLIDAR_FILENAME=${RPLIDAR_SDK_DIR}_v${RPLIDAR_SDK_VERSION}
 
+JSON_GIT_REPO=https://github.com/nlohmann/json.git
+JSON_GIT_VERSION=v2.1.1
+
 echo "Configuration du projet $PROJECT"
 if [ ! -d "$DOWNLOAD_DIR" ] ; then
     echo "-- Création du répertoire de download $DOWNLOAD_DIR"
@@ -25,6 +28,16 @@ if [ ! -f "$RPLIDAR_FILENAME.zip" ] ; then
   unzip $RPLIDAR_FILENAME.zip -d $RPLIDAR_SDK_DIR
 fi
 
+cd $DOWNLOAD_DIR
+if [ ! -d "json" ] ; then
+    echo "---- Clone du repo pour la dépendance JSON $JSON_GIT_REPO"
+    git clone $JSON_GIT_REPO
+fi
+cd json
+echo "---- Utilisation de la version $JSON_GIT_VERSION pour le JSON"
+git checkout $JSON_GIT_VERSION
+
+cd $DOWNLOAD_DIR
 echo "-- Build des dépendances externe"
 if [ -d "$RPLIDAR_SDK_DIR" ] ; then
   echo "---- Build RPLidar SDK $RPLIDAR_SDK_VERSION ..."
@@ -37,18 +50,14 @@ fi
 
 echo "-- Configuration du build du projet $PROJECT"
 
-
 echo "---- Création du répertoire de build $BUILD_DIR"
 rm -Rf $BUILD_DIR
 mkdir -p $BUILD_DIR
-
-cd $BUILD_DIR
-echo "---- Download des dépendances Conan dependency manager"
-conan install ../ || exit 1
 
 echo "Configuration terminé"
 
 echo "Build du projet $PROJECT"
 cd $BUILD_DIR
-conan build .. || exit 1
+cmake ..
+cmake --build .
 echo "Build terminé"

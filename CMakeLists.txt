@@ -7,8 +7,9 @@
 cmake_minimum_required(VERSION 3.2.2)
 
 # Variable de build
-#set(RPLIDAR_SDK_DIR    "download/rplidar_sdk/sdk")
 set(CMAKE_CXX_STANDARD 11)
+set(RPLIDAR_SDK_DIR    "download/rplidar_sdk/sdk")
+set(JSON_LIB_DIR       "download/json")
 
 #====================================================================#
 #  Setup Project                                                     #
@@ -16,16 +17,11 @@ set(CMAKE_CXX_STANDARD 11)
 project(rplidar_bridge)
 
 # Récupération de la définition de la lib externe RPLidar
-#include_directories(${RPLIDAR_SDK_DIR}/sdk/include/)
-#link_directories(${RPLIDAR_SDK_DIR}/output/Linux/Release)
+include_directories(${RPLIDAR_SDK_DIR}/sdk/include/)
+link_directories(${RPLIDAR_SDK_DIR}/output/Linux/Release)
 
-# Inclusion des dépendances géré par Conan
-if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/build/conanbuildinfo.cmake) #Clion, with conanbuildinfo.cmake in build folder
-    include(${CMAKE_CURRENT_SOURCE_DIR}/build/conanbuildinfo.cmake)
-else()
-    include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake) # Not CLion
-endif()
-conan_basic_setup()
+# Récupération de la définition pour JSON
+include_directories(${JSON_LIB_DIR}/src/)
 
 # Récupération des sources du projets
 file(GLOB SRCS "src/*.cpp")

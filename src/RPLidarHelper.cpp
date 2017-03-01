@@ -82,7 +82,7 @@ JsonResult RPLidarHelper::getHealth() {
     json datas;
     datas["value"] = healthinfo.status;
     datas["libelle"] = libelle;
-    datas["errorCode"] = healthinfo.error_code;
+    datas["errorCode"] = (unsigned int) healthinfo.error_code;
 
     JsonResult r;
     r.status = RESPONSE_OK;
