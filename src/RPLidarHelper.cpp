@@ -92,8 +92,20 @@ JsonResult RPLidarHelper::getHealth() {
 }
 
 JsonResult RPLidarHelper::startScan(JsonQuery q) {
-    this->driver->startMotor();
-    this->driver->startScan();
+    if (IS_FAIL(this->driver->startMotor())) {
+        JsonResult r;
+        r.action = q.action;
+        r.status = RESPONSE_ERROR;
+        r.errorMessage = "Impossible de démarrer le moteur";
+        return r;
+    };
+    if (IS_FAIL(this->driver->startScan())) {
+        JsonResult r;
+        r.action = q.action;
+        r.status = RESPONSE_ERROR;
+        r.errorMessage = "Impossible de démarrer le scan";
+        return r;
+    }
     return this->setMotorSpeed(q);
 }
 
@@ -101,22 +113,25 @@ JsonResult RPLidarHelper::setMotorSpeed(JsonQuery q) {
     JsonResult r;
     r.action = q.action;
     r.datas = q.datas;
+    u_result result = RESULT_OK;
     if (!q.datas["speed"].is_null()) {
-        this->setMotorSpeed((_u16) q.datas["speed"]);
-        r.status = RESPONSE_OK;
-    } else {
+        result = this->setMotorSpeed((_u16) q.datas["speed"]);
+    }
+    if (IS_FAIL(result)) {
         r.status = RESPONSE_ERROR;
+    } else {
+        r.status = RESPONSE_OK;
     }
     return r;
 }
 
-void RPLidarHelper::setMotorSpeed(_u16 speed) {
+u_result RPLidarHelper::setMotorSpeed(_u16 speed) {
     if (speed > MAX_MOTOR_PWM) {
         speed = MAX_MOTOR_PWM;
     } else if (speed < 0) {
         speed = 0;
     }
-    this->driver->setMotorPWM(speed);
+    return this->driver->setMotorPWM(speed);
 }
 
 JsonResult RPLidarHelper::grabScanData() {

@@ -40,7 +40,7 @@ private:
 
     RPlidarDriver * driver;
 
-    void setMotorSpeed(_u16 speed);
+    u_result setMotorSpeed(_u16 speed);
 };
 
 
