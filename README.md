@@ -27,7 +27,7 @@ JSON pour piloter le [RPLidar](http://www.slamtec.com/en/Lidar)
     "hardwareVersion": 2,
     "serialNumber": "123456ABCDEF"
   },
-  "errorMessage": null;
+  "errorMessage": null
 }
 ```
 
@@ -50,7 +50,7 @@ JSON pour piloter le [RPLidar](http://www.slamtec.com/en/Lidar)
     "value": 0,
     "errorCode": 0
   },
-  "errorMessage": null;
+  "errorMessage": null
 }
 ```
 
@@ -87,7 +87,7 @@ La vitesse est comprise entre 0 et 1023
 {
   "status": "OK",
   "action": "START_SCAN",
-  "errorMessage": null;
+  "errorMessage": null
 }
 ```
 
@@ -110,7 +110,7 @@ La vitesse est comprise entre 0 et 1023
 {
   "status": "OK",
   "action": "SET_SPEED",
-  "errorMessage": null;
+  "errorMessage": null
 }
 ```
 
@@ -163,6 +163,6 @@ La vitesse est comprise entre 0 et 1023
 {
   "status": "OK",
   "action": "EXIT",
-  "errorMessage": null;
+  "errorMessage": null
 }
 ```
