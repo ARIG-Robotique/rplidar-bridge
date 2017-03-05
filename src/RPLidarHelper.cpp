@@ -38,7 +38,10 @@ JsonResult RPLidarHelper::getDeviceInfo() {
     ostringstream serialStream;
     for (int i = 0 ; i < 16 ; i ++) {
         _u8 v = deviceInfo.serialnum[i];
-        serialStream << setw(2) << setfill('0') << hex << v;
+        char buff[3];
+        snprintf(buff, sizeof(buff), "%02X", v);
+        string tmp = buff;
+        serialStream << tmp;
     }
 
     // Récupération du firmware
@@ -109,6 +112,23 @@ JsonResult RPLidarHelper::startScan(JsonQuery q) {
     return this->setMotorSpeed(q);
 }
 
+JsonResult RPLidarHelper::stopScan() {
+    JsonResult r;
+    r.action = STOP_SCAN;
+    r.status = RESPONSE_OK;
+
+    if (IS_FAIL(this->driver->stop())) {
+        r.status = RESPONSE_ERROR;
+        r.errorMessage = "Impossible d'arreter le scan";
+    }
+    if (IS_FAIL(this->driver->stopMotor())) {
+        r.status = RESPONSE_ERROR;
+        r.errorMessage = "Impossible d'arreter le moteur";
+    }
+
+    return r;
+}
+
 JsonResult RPLidarHelper::setMotorSpeed(JsonQuery q) {
     JsonResult r;
     r.action = q.action;
@@ -141,7 +161,8 @@ JsonResult RPLidarHelper::grabScanData() {
     rplidar_response_measurement_node_t nodes[360*2];
     size_t   count = _countof(nodes);
 
-    if (IS_OK(this->driver->grabScanData(nodes, count))) {
+    u_result res = this->driver->grabScanData(nodes, count);
+    if (IS_OK(res)) {
         this->driver->ascendScanData(nodes, count);
 
         r.status = RESPONSE_OK;
@@ -179,8 +200,7 @@ JsonResult RPLidarHelper::grabScanData() {
 }
 
 void RPLidarHelper::end() {
-    this->driver->stop();
-    this->driver->stopMotor();
+    this->stopScan();
     this->driver->disconnect();
 
     RPlidarDriver::DisposeDriver(this->driver);

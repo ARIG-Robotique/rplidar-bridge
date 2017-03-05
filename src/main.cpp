@@ -11,11 +11,22 @@ int main(int argc, const char *argv[]) {
 
     // Initialisation de la socket et attente de connexion.
     socket.init();
-    socket.waitConnection();
 
-    bool stop = false;
+    bool stop = false, waitConnection = true;
     while (!stop) {
+        if (waitConnection) {
+            cout << "Attente de connexion client ..." << endl;
+            socket.waitConnection();
+            waitConnection = false;
+        }
+
         JsonQuery query = socket.getQuery();
+        if (query.action == DATA_INVALID) {
+            cout << "Données invalide, la socket client est fermé ?" << endl;
+            waitConnection = true;
+            continue;
+        }
+
         JsonResult result;
         if (query.action == DEVICE_INFO) {
             result = lidar.getDeviceInfo();
@@ -25,6 +36,9 @@ int main(int argc, const char *argv[]) {
 
         } else if (query.action == START_SCAN) {
             result = lidar.startScan(query);
+
+        } else if (query.action == STOP_SCAN) {
+            result = lidar.stopScan();
 
         } else if (query.action == SET_SPEED) {
             result = lidar.setMotorSpeed(query);

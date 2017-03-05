@@ -44,9 +44,18 @@ void SocketHelper::init() {
     // The listen() function places all incoming connection into a backlog queue
     // until accept() call accepts the connection.
     listen(serverSockfd, backlogQueue);
+
+    // Default value when the no client are connected
+    clientSockfd = DEFAULT_SOCKET_FD;
 }
 
 void SocketHelper::waitConnection() {
+    // Close the socket client if not équals the default value
+    if (clientSockfd != DEFAULT_SOCKET_FD) {
+        close(clientSockfd);
+        clientSockfd = DEFAULT_SOCKET_FD;
+    }
+
     // The accept() call actually accepts an incoming connection
     clilen = sizeof(cli_addr);
 
@@ -81,11 +90,11 @@ JsonQuery SocketHelper::getQuery(void) {
             q.datas = jsonValue["datas"];
         } catch (const exception & e) {
             cerr << "Erreur de lecture du JSON : " << e.what() << endl;
-            q.action = "UNPARSABLE";
+            q.action = DATA_UNPARSABLE;
         }
     } else {
         cerr << "Empty query from client" << endl;
-        q.action = "DATA_INVALID";
+        q.action = DATA_INVALID;
     }
 
     return q;
@@ -100,8 +109,10 @@ void SocketHelper::sendResponse(JsonResult response) {
 
     cout << "Response to client : " << r.dump(2) << endl;
 
-    string str = r.dump();
-    send(clientSockfd, str.c_str(), str.length(), 0);
+    ostringstream outStr;
+    outStr << r.dump() << endl;
+
+    send(clientSockfd, outStr.str().c_str(), outStr.str().length(), 0);
 }
 
 void SocketHelper::end() {

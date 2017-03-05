@@ -28,6 +28,7 @@ public:
     JsonResult getHealth();
 
     JsonResult startScan(JsonQuery q);
+    JsonResult stopScan();
     JsonResult setMotorSpeed(JsonQuery q);
 
     JsonResult grabScanData();

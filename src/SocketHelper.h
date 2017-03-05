@@ -19,6 +19,8 @@ public:
     void end();
 
 private:
+    static const int DEFAULT_SOCKET_FD = -1;
+
     int serverSockfd, clientSockfd, port, backlogQueue;
     socklen_t clilen;
     struct sockaddr_in serv_addr, cli_addr;
