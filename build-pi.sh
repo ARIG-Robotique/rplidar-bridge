@@ -4,7 +4,7 @@
 PROJECT="ARIG C++ RPLidar Bridge (cross compile Raspberry PI x64) "
 
 ROOT_DIR=$(pwd)
-BUILD_DIR=$ROOT_DIR/build
+BUILD_DIR=$ROOT_DIR/build-pi
 
 echo "Build du projet $PROJECT"
 if [ -d "$BUILD_DIR" ] ; then
