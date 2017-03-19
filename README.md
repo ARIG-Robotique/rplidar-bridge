@@ -62,7 +62,7 @@ La données libélé peut prendre les valeurs suivante :
 
 Les autres valeurs sont récupéré directement depuis le driver RPLidar
 
-### Lancer un scan
+### Lancer le scan
 
 * Query sans vitesse de rotation moteur
 ```json
@@ -87,6 +87,24 @@ La vitesse est comprise entre 0 et 1023
 {
   "status": "OK",
   "action": "START_SCAN",
+  "errorMessage": null
+}
+```
+
+### Arreter le scan
+
+* Query
+```json
+{
+  "action": "STOP_SCAN"
+}
+```
+
+* Réponse
+```json
+{
+  "status": "OK",
+  "action": "STOP_SCAN",
   "errorMessage": null
 }
 ```
