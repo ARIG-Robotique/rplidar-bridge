@@ -9,7 +9,7 @@ RPLIDAR_FILENAME=${RPLIDAR_SDK_DIR}_v${RPLIDAR_SDK_VERSION}
 RPLIDAR_DOWNLOAD_URL=http://www.slamtec.com/download/lidar/sdk/${RPLIDAR_FILENAME}.zip
 
 JSON_VERSION=v2.1.1
-JSON_DIR=json
+JSON_DIR=json-$JSON_VERSION
 JSON_FILENAME=json.hpp
 JSON_DOWNLOAD_URL=https://github.com/nlohmann/json/releases/download/${JSON_VERSION}/${JSON_FILENAME}
 
@@ -27,10 +27,10 @@ if [ ! -f "$RPLIDAR_FILENAME.zip" ] ; then
 fi
 
 cd $DOWNLOAD_DIR
-if [ ! -f "json-$JSON_VERSION/$JSON_FILENAME" ] ; then
+if [ ! -f "$JSON_DIR/$JSON_FILENAME" ] ; then
     echo "---- Download JSON $JSON_VERSION ..."
-    mkdir -p json-$JSON_VERSION json
-    curl -L $JSON_DOWNLOAD_URL -o json-$JSON_VERSION/$JSON_FILENAME
+    mkdir -p $JSON_DIR json
+    curl -L $JSON_DOWNLOAD_URL -o $JSON_DIR/$JSON_FILENAME
     cd json
-    ln -sf ../json-$JSON_VERSION/$JSON_FILENAME
+    ln -sf ../$JSON_DIR/$JSON_FILENAME
 fi

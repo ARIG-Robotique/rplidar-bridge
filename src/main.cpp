@@ -2,15 +2,32 @@
 #include "SocketHelper.h"
 #include "RPLidarHelper.h"
 
-int main(int argc, const char *argv[]) {
-    SocketHelper socket;
-    RPLidarHelper lidar;
+void printUsage();
+
+int main(int argc, const char **argv) {
+
+    if (argc != 3) {
+        printUsage();
+        return 1;
+    }
+    string socketType = argv[1];
+    string socketConf = argv[2];
+
+    // Initialisation de la socket
+    SocketHelper socket(socketType);
+    if (socket.isUnknown()) {
+        printUsage();
+        return 2;
+    } else if (socket.isInet()) {
+        socket.setPort(atoi(socketConf.c_str()));
+    } else if (socket.isUnix()) {
+        socket.setSocketFile(socketConf);
+    }
+    socket.init();
 
     // Initialisation RPLidar
+    RPLidarHelper lidar;
     lidar.init();
-
-    // Initialisation de la socket et attente de connexion.
-    socket.init();
 
     bool stop = false, waitConnection = true;
     while (!stop) {
@@ -67,4 +84,9 @@ int main(int argc, const char *argv[]) {
     lidar.end();
 
     return 0;
+}
+
+void printUsage() {
+    cerr << "Usage socket unix : rplidar_bridge unix /tmp/socket.sock" << endl;
+    cerr << "Usage socket tcp  : rplidar_bridge tcp 8686" << endl;
 }
