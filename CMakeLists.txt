@@ -7,12 +7,6 @@
 cmake_minimum_required(VERSION 3.2.2)
 
 # Variable pour les dépendances externes
-if ($ENV{CLION_IDE})
-    set(PROJECT_ROOT_DIR       "../..")
-else()
-    set(PROJECT_ROOT_DIR       "..")
-endif()
-
 set(DOWNLOAD_DIR "download")
 
 set(RPLIDAR_LIB_NAME   "rplidar_sdk")
@@ -37,12 +31,6 @@ else()
     message(FATAL_ERROR "Arch OS is not valid")
 endif()
 
-message(STATUS "RUN IN CLION :          " $ENV{CLION_IDE})
-message(STATUS "CMAKE BIN DIR :         " ${CMAKE_BINARY_DIR})
-message(STATUS "DOWNLOAD DIRECTORY :    " ${DOWNLOAD_DIR})
-message(STATUS "RPLIDAR ARCH/OS :       " ${RPLIDAR_ARCH_DIR})
-message(STATUS "RPLIDAR SDK DIRECTORY : " ${RPLIDAR_SDK_DIR})
-
 #====================================================================#
 #  Setup Project                                                     #
 #====================================================================#
@@ -51,7 +39,7 @@ project(rplidar_bridge)
 # Récupération des dépendances par le script de download
 execute_process(
         COMMAND sh download.sh
-        WORKING_DIRECTORY ${PROJECT_ROOT_DIR}
+        WORKING_DIRECTORY ..
 )
 
 # Compilation de la lib externe RPLidar #
