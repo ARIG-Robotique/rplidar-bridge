@@ -17,7 +17,7 @@ mkdir -p $BUILD_DIR
 
 echo "-- Build du projet $PROJECT"
 cd $BUILD_DIR
-export PI_TOOLS_HOME=~/raspberry-tools
+export PI_TOOLS_HOME=/opt/raspberrypi-tools
 cmake -DCMAKE_TOOLCHAIN_FILE=raspberry.cmake ..
 cmake --build .
 echo "Build terminé"
