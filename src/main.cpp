@@ -88,5 +88,5 @@ int main(int argc, const char **argv) {
 
 void printUsage() {
     cerr << "Usage socket unix : rplidar_bridge unix /tmp/socket.sock" << endl;
-    cerr << "Usage socket tcp  : rplidar_bridge tcp 8686" << endl;
+    cerr << "Usage socket inet : rplidar_bridge inet 8686" << endl;
 }
