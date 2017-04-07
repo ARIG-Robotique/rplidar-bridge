@@ -2,9 +2,7 @@ SET (CMAKE_SYSTEM_NAME Linux)
 SET (CMAKE_SYSTEM_VERSION 1)
 
 # Check for Raspberry Pi Tools and bail out if they don't have it
-if(DEFINED ENV{PI_TOOLS_HOME})
-    message("Cross compillaion Raspberry PI with $ENV{PI_TOOLS_HOME}")
-else()
+if(NOT DEFINED ENV{PI_TOOLS_HOME})
     message(FATAL_ERROR "Raspberry PI build need 'export PI_TOOLS_HOME=<path>' environment variable")
     return()
 endif()
