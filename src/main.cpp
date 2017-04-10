@@ -6,7 +6,7 @@ void printUsage();
 
 int main(int argc, const char **argv) {
 
-    if (argc != 3) {
+    if (argc < 3) {
         printUsage();
         return 1;
     }
@@ -23,6 +23,12 @@ int main(int argc, const char **argv) {
     } else if (socket.isUnix()) {
         socket.setSocketFile(socketConf);
     }
+
+    if (argc == 4) {
+        string debug = argv[3];
+        socket.debugMode(debug == "debug");
+    }
+
     socket.init();
 
     // Initialisation RPLidar
@@ -87,6 +93,6 @@ int main(int argc, const char **argv) {
 }
 
 void printUsage() {
-    cerr << "Usage socket unix : rplidar_bridge unix /tmp/socket.sock" << endl;
-    cerr << "Usage socket inet : rplidar_bridge inet 8686" << endl;
+    cerr << "Usage socket unix : rplidar_bridge unix /tmp/socket.sock [debug]" << endl;
+    cerr << "Usage socket inet : rplidar_bridge inet 8686 [debug]" << endl;
 }

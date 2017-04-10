@@ -29,6 +29,7 @@ public:
     bool isUnknown();
     void setPort(int port);
     void setSocketFile(string socketFile);
+    void debugMode(bool debug);
 
 private:
     static const int DEFAULT_SOCKET_FD = -1;
@@ -36,6 +37,7 @@ private:
 
     string socketType, socketFile;
     int serverSockfd, clientSockfd, port, backlogQueue;
+    bool debug;
 
     socklen_t clilen;
     struct sockaddr_in cli_addr_in;
