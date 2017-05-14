@@ -73,18 +73,18 @@ JsonResult RPLidarHelper::getHealth() {
         return fail;
     }
 
-    string libelle;
+    string state;
     if (healthinfo.status == RPLIDAR_STATUS_ERROR) {
-        libelle = "ERROR";
+        state = "ERROR";
     } else if (healthinfo.status == RPLIDAR_STATUS_WARNING) {
-        libelle = "WARNING";
+        state = "WARNING";
     } else {
-        libelle = "OK";
+        state = "OK";
     }
 
     json datas;
     datas["value"] = healthinfo.status;
-    datas["libelle"] = libelle;
+    datas["state"] = state;
     datas["errorCode"] = (unsigned int) healthinfo.error_code;
 
     JsonResult r;
