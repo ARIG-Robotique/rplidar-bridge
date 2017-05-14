@@ -171,13 +171,13 @@ JsonResult RPLidarHelper::grabScanData() {
 
         json scanDatas = json::array();
         for (int pos = 0; pos < (int) count ; ++pos) {
-            if ((nodes[pos].distance_q2 == 0) || ((nodes[pos].distance_q2 / 4.0f) > 3600)) {
+            float distanceMm = nodes[pos].distance_q2 / 4.0f;
+            if ((distanceMm < 150) || (distanceMm > 3600)) {
                 ignored++;
                 continue;
             }
 
             float angleDeg = (nodes[pos].angle_q6_checkbit >> RPLIDAR_RESP_MEASUREMENT_ANGLE_SHIFT)/64.0f;
-            float distanceMm = nodes[pos].distance_q2 / 4.0f;
             bool syncBit = nodes[pos].sync_quality & RPLIDAR_RESP_MEASUREMENT_SYNCBIT == 1;
             int quality = nodes[pos].sync_quality >> RPLIDAR_RESP_MEASUREMENT_QUALITY_SHIFT;
 
