@@ -163,12 +163,9 @@ JsonResult RPLidarHelper::grabScanData() {
 
     u_result res = this->driver->grabScanData(nodes, count);
     if (IS_OK(res)) {
-        this->driver->ascendScanData(nodes, count);
-
         r.status = RESPONSE_OK;
 
         int ignored = 0;
-
         json scanDatas = json::array();
         for (int pos = 0; pos < (int) count ; ++pos) {
             float distanceMm = nodes[pos].distance_q2 / 4.0f;
