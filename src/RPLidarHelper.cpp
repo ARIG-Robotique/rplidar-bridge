@@ -181,6 +181,13 @@ JsonResult RPLidarHelper::grabScanData() {
             bool syncBit = nodes[pos].sync_quality & RPLIDAR_RESP_MEASUREMENT_SYNCBIT == 1;
             int quality = nodes[pos].sync_quality >> RPLIDAR_RESP_MEASUREMENT_QUALITY_SHIFT;
 
+            // Transposition des angles dans le repère robot
+            if (angleDeg > 0 && angleDeg < 180) {
+                angleDeg *= -1;
+            } else {
+                angleDeg -= 360;
+            }
+
             json v;
             v["angleDeg"] = angleDeg;
             v["distanceMm"] = distanceMm;
