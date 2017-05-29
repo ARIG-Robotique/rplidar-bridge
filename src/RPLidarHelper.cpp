@@ -179,10 +179,10 @@ JsonResult RPLidarHelper::grabScanData() {
             int quality = nodes[pos].sync_quality >> RPLIDAR_RESP_MEASUREMENT_QUALITY_SHIFT;
 
             // Transposition des angles dans le repère robot
-            if (angleDeg > 0 && angleDeg < 180) {
+            if (angleDeg < 180) {
                 angleDeg *= -1;
             } else {
-                angleDeg -= 360;
+                angleDeg = 360 - angleDeg;
             }
 
             json v;
