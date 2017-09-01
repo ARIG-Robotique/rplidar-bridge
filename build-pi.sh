@@ -11,7 +11,7 @@ echo " - Build local : ./build-pi.sh [local]"
 echo " - Build remote : ./build-pi.sh remote [nerell]"
 echo ""
 
-if [ "$BUILD_MODE" == "local" ] ; then
+if [ "${BUILD_MODE}" == "local" ] ; then
     ROOT_DIR=$(pwd)
     BUILD_DIR=$ROOT_DIR/build-pi
 
@@ -30,7 +30,7 @@ if [ "$BUILD_MODE" == "local" ] ; then
     cmake --build . || exit $?
     echo "Build terminé"
 
-elif [ "$BUILD_MODE" == "remote" ] ; then
+elif [ "${BUILD_MODE}" == "remote" ] ; then
     DEST_DIR=/home/pi/rplidarBridge
 
     echo "-- SSH : Création répertoire RPLidar Bridge"
