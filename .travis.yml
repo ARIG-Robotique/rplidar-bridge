@@ -8,7 +8,6 @@ matrix:
     - os: linux
       env:
         - SCRIPT=build-pi.sh
-        - MATRIX_EVAL="echo 'NOP'"
 
     - os: linux
       addons:
@@ -19,7 +18,8 @@ matrix:
             - g++-5
       env:
         - SCRIPT=build.sh
-        - MATRIX_EVAL="export CC=gcc-5 && export CXX=g++-5
+        - COMP=gcc-5
+        - COMPXX=g++-5
 
     - os: linux
       addons:
@@ -30,7 +30,8 @@ matrix:
             - g++-6
       env:
         - SCRIPT=build.sh
-        - MATRIX_EVAL="export CC=gcc-6 && export CXX=g++-6
+        - COMP=gcc-6
+        - COMPXX=g++-6
 
     - os: linux
       addons:
@@ -42,7 +43,8 @@ matrix:
             - clang-3.6
       env:
         - SCRIPT=build.sh
-        - MATRIX_EVAL="export CC=clang-3.6 && export CXX=clang++-3.6
+        - COMP=clang-3.6
+        - COMPXX=clang++-3.6
 
     - os: linux
       addons:
@@ -54,36 +56,35 @@ matrix:
             - clang-3.7
       env:
         - SCRIPT=build.sh
-        - MATRIX_EVAL="export CC=clang-3.7 && export CXX=clang++-3.7
+        - COMP=clang-3.7
+        - COMPXX=clang++-3.7
 
     - os: osx
       osx_image: xcode8
       env:
         - SCRIPT=build-pi.sh
-        - MATRIX_EVAL="echo 'NOP'"
 
     - os: osx
       osx_image: xcode8
       env:
         - SCRIPT=build.sh
-        - MATRIX_EVAL="export CC=gcc-4.9 && export CXX=g++-4.9"
+        - MATRIX_EVAL="brew install gcc5"
+        - COMP=gcc-5
+        - COMPXX=g++-5
 
     - os: osx
       osx_image: xcode8
       env:
         - SCRIPT=build.sh
-        - MATRIX_EVAL="brew install gcc5 && export CC=gcc-5 && export CXX=g++-5"
-
-    - os: osx
-      osx_image: xcode8
-      env:
-        - SCRIPT=build.sh
-        - MATRIX_EVAL="brew install gcc && export CC=gcc-6 && export CXX=g++-6"
+        - MATRIX_EVAL="brew install gcc"
+        - COMP=gcc-6
+        - COMPXX=g++-6
 
 before_install:
-  - eval "${MATRIX_EVAL}"
-  - eval "${CC} --version"
-  - eval "${CXX} --version"
+  - if [[ "${MATRIX_EVAL}" != "" ]]; then echo ${MATRIX_EVAL} && eval ${MATRIX_EVAL}; fi
 
 script:
+  # make sure CC and CXX is correctly set
+  - if [[ "${COMP}" != "" ]]; then export CC=${COMP}; fi
+  - if [[ "${COMPXX}" != "" ]]; then export CXX=${COMPXX}; fi
   - sh ${SCRIPT}
