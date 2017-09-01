@@ -33,32 +33,6 @@ matrix:
         - COMP=gcc-6
         - COMPXX=g++-6
 
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.6
-          packages:
-            - clang-3.6
-      env:
-        - SCRIPT=build.sh
-        - COMP=clang-3.6
-        - COMPXX=clang++-3.6
-
-    - os: linux
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.7
-          packages:
-            - clang-3.7
-      env:
-        - SCRIPT=build.sh
-        - COMP=clang-3.7
-        - COMPXX=clang++-3.7
-
     - os: osx
       osx_image: xcode8
       env:
@@ -87,4 +61,5 @@ script:
   # make sure CC and CXX is correctly set
   - if [[ "${COMP}" != "" ]]; then export CC=${COMP}; fi
   - if [[ "${COMPXX}" != "" ]]; then export CXX=${COMPXX}; fi
+  - ${CXX} --version
   - sh ${SCRIPT}
