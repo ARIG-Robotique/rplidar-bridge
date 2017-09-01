@@ -50,5 +50,5 @@ elif [ "$BUILD_MODE" == "remote" ] ; then
 
     echo "-- SSH : Build terminé"
 else
-    echo "Build mode [$BUILD_MODE] non supporté. Seulement local et remore."
+    echo "Build mode [$BUILD_MODE] non supporté. Seulement local et remote."
 fi
