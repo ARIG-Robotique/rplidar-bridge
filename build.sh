@@ -17,6 +17,6 @@ mkdir -p $BUILD_DIR
 
 echo "-- Build du projet $PROJECT"
 cd $BUILD_DIR
-cmake ..
-cmake --build .
+cmake .. || exit $?
+cmake --build . || exit $?
 echo "Build terminé"
