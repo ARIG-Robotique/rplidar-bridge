@@ -14,27 +14,23 @@ matrix:
       addons:
         apt:
           sources:
-            # add PPAs with more up-to-date toolchains
             - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.6
           packages:
-            # install toolchains
             - g++-5
       env:
         - SCRIPT=build.sh
-        - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5
+        - MATRIX_EVAL="export CC=gcc-5 && export CXX=g++-5
 
     - os: linux
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.6
           packages:
             - g++-6
       env:
         - SCRIPT=build.sh
-        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6
+        - MATRIX_EVAL="export CC=gcc-6 && export CXX=g++-6
 
     - os: linux
       addons:
@@ -46,19 +42,19 @@ matrix:
             - clang-3.6
       env:
         - SCRIPT=build.sh
-        - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6
+        - MATRIX_EVAL="export CC=clang-3.6 && export CXX=clang++-3.6
 
     - os: linux
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.6
+            - llvm-toolchain-precise-3.7
           packages:
             - clang-3.7
       env:
         - SCRIPT=build.sh
-        - MATRIX_EVAL="CC=clang-3.7 && CXX=clang++-3.7
+        - MATRIX_EVAL="export CC=clang-3.7 && export CXX=clang++-3.7
 
     - os: osx
       osx_image: xcode8
@@ -70,22 +66,24 @@ matrix:
       osx_image: xcode8
       env:
         - SCRIPT=build.sh
-        - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+        - MATRIX_EVAL="export CC=gcc-4.9 && export CXX=g++-4.9"
 
     - os: osx
       osx_image: xcode8
       env:
         - SCRIPT=build.sh
-        - MATRIX_EVAL="brew install gcc5 && CC=gcc-5 && CXX=g++-5"
+        - MATRIX_EVAL="brew install gcc5 && export CC=gcc-5 && export CXX=g++-5"
 
     - os: osx
       osx_image: xcode8
       env:
         - SCRIPT=build.sh
-        - MATRIX_EVAL="brew install gcc && CC=gcc-6 && CXX=g++-6"
+        - MATRIX_EVAL="brew install gcc && export CC=gcc-6 && export CXX=g++-6"
 
 before_install:
   - eval "${MATRIX_EVAL}"
+  - eval "${CC} --version"
+  - eval "${CXX} --version"
 
 script:
   - sh ${SCRIPT}
