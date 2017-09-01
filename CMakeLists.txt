@@ -6,6 +6,17 @@
 # Contrôle de la version minimale de CMake
 cmake_minimum_required(VERSION 3.2.2)
 
+# Check program requis
+function (checkProgram name)
+    message("-- Detecting ${name} program")
+    find_program(PROGRAM_PRESENT ${name})
+    if (NOT PROGRAM_PRESENT)
+        message(FATAL_ERROR "${name} must be installed")
+    else()
+        message("-- Detecting ${name} program - done")
+    endif()
+endfunction(checkProgram)
+
 # Variable pour les dépendances externes
 set(DOWNLOAD_DIR "download")
 
@@ -30,6 +41,11 @@ elseif (UNIX AND APPLE)
 else()
     message(FATAL_ERROR "Arch OS is not valid")
 endif()
+
+# Check program
+checkProgram(git)
+checkProgram(curl)
+checkProgram(unzip)
 
 #====================================================================#
 #  Setup Project                                                     #

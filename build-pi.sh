@@ -25,7 +25,7 @@ if [ "$BUILD_MODE" == "local" ] ; then
 
     echo "-- Build du projet $PROJECT"
     cd $BUILD_DIR
-    export PI_TOOLS_HOME=/opt/raspberrypi-tools
+    export PI_TOOLS_HOME=$(pwd)/../download/tools
     cmake -DCMAKE_TOOLCHAIN_FILE=raspberry.cmake ..
     cmake --build .
     echo "Build terminé"

@@ -13,9 +13,11 @@ JSON_DIR=json-$JSON_VERSION
 JSON_FILENAME=json.hpp
 JSON_DOWNLOAD_URL=https://github.com/nlohmann/json/releases/download/${JSON_VERSION}/${JSON_FILENAME}
 
-echo "Download des dépendances externe"
+RASPBERRY_TOOLS=https://github.com/raspberrypi/tools.git
+
+echo "-- Download external dependencies"
 if [ ! -d "$DOWNLOAD_DIR" ] ; then
-    echo "-- Création du répertoire de download $DOWNLOAD_DIR"
+    echo "---- Make download directory : $DOWNLOAD_DIR"
     mkdir -p $DOWNLOAD_DIR
 fi
 
@@ -33,4 +35,10 @@ if [ ! -f "$JSON_DIR/$JSON_FILENAME" ] ; then
     curl -L $JSON_DOWNLOAD_URL -o $JSON_DIR/$JSON_FILENAME
     cd json
     ln -sf ../$JSON_DIR/$JSON_FILENAME
+fi
+
+cd $DOWNLOAD_DIR
+if [ ! -d "tools" ] ; then
+    echo "---- Clone raspberry-tools ..."
+    git clone --depth=1 $RASPBERRY_TOOLS
 fi

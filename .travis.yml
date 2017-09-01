@@ -7,6 +7,15 @@ compiler:
   - gcc
   - clang
 
+env:
+  - BUILD_TYPE=""
+  - BUILD_TYPE="-pi"
+
+matrix:
+  exclude:
+    - compiler: clang
+      env: BUILD_TYPE="-pi"
+
 addons:
   apt:
     sources:
@@ -20,4 +29,4 @@ addons:
       - clang-3.6
 
 script:
-  - sh build.sh
+  - sh build${BUILD_TYPE}.sh
