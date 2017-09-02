@@ -50,7 +50,7 @@ matrix:
       osx_image: xcode8
       env:
         - SCRIPT=build.sh
-        - MATRIX_EVAL="brew install gcc"
+        - MATRIX_EVAL="brew install gcc6"
         - COMP=gcc-6
         - COMPXX=g++-6
 
