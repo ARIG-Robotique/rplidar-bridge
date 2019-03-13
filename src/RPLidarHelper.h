@@ -38,6 +38,7 @@ public:
 private:
     string comFile;
     unsigned int baudrate;
+    vector<RplidarScanMode> scanModes;
 
     RPlidarDriver * driver;
 

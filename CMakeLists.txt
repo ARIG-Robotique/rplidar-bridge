@@ -4,7 +4,7 @@
 # Description: Build du bridge par socket pour le RPLidar                     #
 #=============================================================================#
 # Contrôle de la version minimale de CMake
-cmake_minimum_required(VERSION 3.2.2)
+cmake_minimum_required(VERSION 3.9.2)
 
 # Check program requis
 function (checkProgram name)
@@ -20,10 +20,18 @@ endfunction(checkProgram)
 # Variable pour les dépendances externes
 set(DOWNLOAD_DIR "download")
 
-set(RPLIDAR_LIB_NAME   "rplidar_sdk")
-set(RPLIDAR_SDK_DIR    "${DOWNLOAD_DIR}/rplidar_sdk/sdk/sdk")
+# Pour faire de la cross compilation
+if (DEFINED BUILD_PI)
+    set(PI_TOOLS_HOME ${CMAKE_CURRENT_SOURCE_DIR}/${DOWNLOAD_DIR}/tools)
+    set(CMAKE_TOOLCHAIN_FILE ./raspberry.cmake)
+endif()
+if (DEFINED BUILD_PI_NEW)
+    set(PI_TOOLS_HOME ${CMAKE_CURRENT_SOURCE_DIR}/${DOWNLOAD_DIR}/newer-tools)
+    set(CMAKE_TOOLCHAIN_FILE ./raspberry-new.cmake)
+endif()
 
-set(JSON_LIB_DIR       "${DOWNLOAD_DIR}/json")
+message(STATUS "Build PI     : ${BUILD_PI}")
+message(STATUS "Build PI New : ${BUILD_PI_NEW}")
 
 # Variable de build
 set(CMAKE_CXX_STANDARD 11)
@@ -31,6 +39,15 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+if (NOT DEFINED CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release")
+endif()
+
+if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    message(STATUS "Debug mode ON")
+    add_definitions(-DDEBUG_MODE)
+endif()
 
 # Détection des fichiers par OS
 if (UNIX AND NOT APPLE)
@@ -60,10 +77,14 @@ execute_process(
 
 # Compilation de la lib externe RPLidar #
 #########################################
+set(RPLIDAR_LIB_NAME   "rplidar_sdk")
+set(RPLIDAR_SDK_DIR    "${DOWNLOAD_DIR}/rplidar_sdk/sdk/sdk")
+
 file(GLOB RPLIDAR_SRCS
         "${RPLIDAR_SDK_DIR}/src/rplidar_driver.cpp"
         "${RPLIDAR_SDK_DIR}/src/hal/thread.cpp"
         "${RPLIDAR_SDK_DIR}/src/arch/${RPLIDAR_ARCH_DIR}/net_serial.cpp"
+        "${RPLIDAR_SDK_DIR}/src/arch/${RPLIDAR_ARCH_DIR}/net_socket.cpp"
         "${RPLIDAR_SDK_DIR}/src/arch/${RPLIDAR_ARCH_DIR}/timer.cpp"
         )
 
@@ -75,7 +96,13 @@ add_library(${RPLIDAR_LIB_NAME} STATIC ${RPLIDAR_SRCS})
 
 # Récupération de la définition pour JSON #
 ###########################################
+set(JSON_LIB_DIR "${DOWNLOAD_DIR}/json")
 include_directories(${JSON_LIB_DIR})
+
+# Récupération de la définition pour SPDLOG #
+#############################################
+set(SPDLOG_LIB_DIR "${DOWNLOAD_DIR}/spdlog")
+include_directories(${SPDLOG_LIB_DIR})
 
 # Récupération des sources du projet principale #
 #################################################

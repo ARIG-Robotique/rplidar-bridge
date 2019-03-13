@@ -13,13 +13,13 @@ SocketHelper::SocketHelper(string socketType, int backlogQueue) {
     this->socketType = socketType;
     this->port = DEFAULT_PORT;
     this->backlogQueue = backlogQueue;
-
-    this->debug = false;
 }
 
-void SocketHelper::debugMode(bool debug) {
-    this->debug = true;
+#ifdef DEBUG_MODE
+void SocketHelper::enableDebug() {
+    cout << " * Debug mode activé" << endl;
 }
+#endif
 
 void SocketHelper::setPort(int port) {
     this->port = port;
@@ -55,8 +55,6 @@ void SocketHelper::init() {
         cerr << "Type de socket non supportée" << endl;
         throw invalid_argument("Type de socket non supportéé. Valid 'unix' et 'inet'");
     }
-
-    cout << "Mode debug : " << this->debug << endl;
 
     // This listen() call tells the socket to listen to the incoming connections.
     // The listen() function places all incoming connection into a backlog queue
@@ -183,9 +181,9 @@ JsonQuery SocketHelper::getQuery(void) {
     if (buffer[0] != 0 && buffer[0] != 10 && buffer[0] != 13) {
         try {
             json jsonValue = json::parse(buffer);
-            if (this->debug) {
-                cout << "Requête client : " << jsonValue.dump(2) << endl;
-            }
+#ifdef DEBUG_MODE
+            cout << "Requête client : " << jsonValue.dump(2) << endl;
+#endif
             q.action = jsonValue["action"];
             q.datas = jsonValue["datas"];
         } catch (const exception & e) {
@@ -207,9 +205,9 @@ void SocketHelper::sendResponse(JsonResult response) {
     r["errorMessage"] = response.errorMessage;
     r["datas"] = response.datas;
 
-    if (this->debug) {
-        cout << "Réponse au client : " << r.dump(2) << endl;
-    }
+#ifdef DEBUG_MODE
+    cout << "Réponse au client : " << r.dump(2) << endl;
+#endif
 
     ostringstream outStr;
     outStr << r.dump() << endl;

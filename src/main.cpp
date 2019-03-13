@@ -24,10 +24,9 @@ int main(int argc, const char **argv) {
         socket.setSocketFile(socketConf);
     }
 
-    if (argc == 4) {
-        string debug = argv[3];
-        socket.debugMode(debug == "debug");
-    }
+#ifdef DEBUG_MODE
+    socket.enableDebug();
+#endif
 
     socket.init();
 
