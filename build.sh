@@ -8,7 +8,7 @@ BUILD_NAME=build
 BUILD_DIR=${ROOT_DIR}/${BUILD_NAME}
 
 echo "Build du projet $PROJECT"
-if [[ -d "${BUILD_DIR}" ]] ; then
+if [ -d "${BUILD_DIR}" ] ; then
     echo "-- Nettoyage du répertoire de build ${BUILD_DIR}"
     rm -Rf ${BUILD_DIR}
 fi
