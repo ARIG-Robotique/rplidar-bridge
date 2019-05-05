@@ -18,6 +18,8 @@ SPDLOG_FILENAME=spdlog-${SPDLOG_VERSION}
 SPDLOG_DOWNLOAD_URL=https://github.com/gabime/spdlog/archive/v${SPDLOG_VERSION}.zip
 
 RASPBERRY_TOOLS=https://github.com/raspberrypi/tools.git
+
+NEWER_RPI_TOOLS_VERSION=35ea4148c163f020b70b770a8b56517693682b1b
 NEWER_RPI_TOOLS=https://github.com/rvagg/rpi-newer-crosstools.git
 
 echo "-- Download external dependencies"
@@ -35,7 +37,9 @@ fi
 cd ${DOWNLOAD_DIR}
 if [ ! -d "newer-tools" ] ; then
     echo "---- Clone newer raspberry-tools ..."
-    git clone --depth=1 ${NEWER_RPI_TOOLS} newer-tools
+    git clone ${NEWER_RPI_TOOLS} newer-tools
+    cd newer-tools
+    git checkout ${NEWER_RPI_TOOLS_VERSION}
 fi
 
 cd ${DOWNLOAD_DIR}
