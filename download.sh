@@ -3,10 +3,10 @@
 ROOT_DIR=$(pwd)
 DOWNLOAD_DIR=${ROOT_DIR}/download
 
-RPLIDAR_SDK_VERSION=v1.10.0
+RPLIDAR_SDK_VERSION=v1.12.0
 RPLIDAR_SDK_DIR=rplidar_sdk
 RPLIDAR_FILENAME=${RPLIDAR_SDK_DIR}_${RPLIDAR_SDK_VERSION}
-RPLIDAR_DOWNLOAD_URL=https://github.com/Slamtec/rplidar_sdk/archive/release/${RPLIDAR_SDK_VERSION}.zip
+RPLIDAR_DOWNLOAD_URL=https://github.com/Slamtec/rplidar_sdk/archive/refs/tags/release/${RPLIDAR_SDK_VERSION}.zip
 
 JSON_VERSION=v2.1.1
 JSON_DIR=json-${JSON_VERSION}
