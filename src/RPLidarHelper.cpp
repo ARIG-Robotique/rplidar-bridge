@@ -57,16 +57,16 @@ JsonResult RPLidarHelper::getDeviceInfo() {
         firmStream << "0";
     }
 
-    json datas;
-    datas["serialNumber"] = serialStream.str();
-    datas["hardwareVersion"] = deviceInfo.hardware_version;
-    datas["firmwareVersion"] = firmStream.str();
-    //datas["scanModes"] = this->scanModes;
+    json data;
+    data["serialNumber"] = serialStream.str();
+    data["hardwareVersion"] = deviceInfo.hardware_version;
+    data["firmwareVersion"] = firmStream.str();
+    //data["scanModes"] = this->scanModes;
 
     JsonResult r;
     r.status = RESPONSE_OK;
     r.action = DEVICE_INFO;
-    r.datas = datas;
+    r.data = data;
     return r;
 }
 
@@ -89,15 +89,15 @@ JsonResult RPLidarHelper::getHealth() {
         state = "OK";
     }
 
-    json datas;
-    datas["value"] = healthinfo.status;
-    datas["state"] = state;
-    datas["errorCode"] = (unsigned int) healthinfo.error_code;
+    json data;
+    data["value"] = healthinfo.status;
+    data["state"] = state;
+    data["errorCode"] = (unsigned int) healthinfo.error_code;
 
     JsonResult r;
     r.status = RESPONSE_OK;
     r.action = DEVICE_INFO;
-    r.datas = datas;
+    r.data = data;
     return r;
 }
 
@@ -139,10 +139,10 @@ JsonResult RPLidarHelper::stopScan() {
 JsonResult RPLidarHelper::setMotorSpeed(JsonQuery q) {
     JsonResult r;
     r.action = q.action;
-    r.datas = q.datas;
+    r.data = q.data;
     u_result result = RESULT_OK;
-    if (!q.datas["speed"].is_null()) {
-        result = this->setMotorSpeed((_u16) q.datas["speed"]);
+    if (!q.data["speed"].is_null()) {
+        result = this->setMotorSpeed((_u16) q.data["speed"]);
     }
     if (IS_FAIL(result)) {
         r.status = RESPONSE_ERROR;
@@ -173,7 +173,7 @@ JsonResult RPLidarHelper::grabScanData() {
         r.status = RESPONSE_OK;
 
         int ignored = 0;
-        json scanDatas = json::array();
+        json scanData = json::array();
         for (int pos = 0; pos < (int) nodeCount ; ++pos) {
             float distanceMm = nodes[pos].dist_mm_q2 / 4.0f;
             if ((distanceMm < 150) || (distanceMm > 3600)) {
@@ -197,11 +197,11 @@ JsonResult RPLidarHelper::grabScanData() {
             v["distanceMm"] = distanceMm;
             v["syncBit"] = syncBit;
             v["quality"] = quality;
-            scanDatas.push_back(v);
+            scanData.push_back(v);
         }
 
-        r.datas["ignored"] = ignored;
-        r.datas["scan"] = scanDatas;
+        r.data["ignored"] = ignored;
+        r.data["scan"] = scanData;
     } else {
         r.status = RESPONSE_ERROR;
         r.errorMessage = "Erreur lors de la récupération des données du SCAN";

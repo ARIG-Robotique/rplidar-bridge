@@ -27,12 +27,12 @@ struct JsonResult {
     std::string status;
     std::string action;
     std::string errorMessage;
-    json datas;
+    json data;
 };
 
 struct JsonQuery {
     std::string action;
-    json datas;
+    json data;
 };
 
 #endif //RPLIDAR_BRIDGE_CONSTANTES_H
