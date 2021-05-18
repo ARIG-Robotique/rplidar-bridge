@@ -1,10 +1,15 @@
 #!/bin/sh
 
-ROBOT_NAME=nerell
-INSTALL_DIR=/opt
+ROBOT_NAME=${1}
+INSTALL_DIR=/home/pi
+
+EXEC=build-pi
+if [ "${ROBOT_NAME}" == "odin" ] ; then
+  EXEC=build-pi-new
+fi
 
 echo "Compilation ..."
-./build-pi.sh
+./${EXEC}.sh
 
 echo "Déploiement Applicatif ..."
-scp ./build-pi/bin/rplidar_bridge $ROBOT_NAME:$INSTALL_DIR/
+scp ./${EXEC}/bin/rplidar_bridge $ROBOT_NAME:$INSTALL_DIR/
