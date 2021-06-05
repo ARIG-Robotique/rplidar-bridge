@@ -4,7 +4,7 @@ ROBOT_NAME=${1}
 INSTALL_DIR=/home/pi
 
 EXEC=build-pi
-if [ "${ROBOT_NAME}" == "odin" ] ; then
+if [ "${ROBOT_NAME}" == "odin" ] || [ "${ROBOT_NAME}" == "nerell" ] ; then
   EXEC=build-pi-new
 fi
 
