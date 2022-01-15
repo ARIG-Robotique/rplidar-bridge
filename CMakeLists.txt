@@ -29,9 +29,14 @@ if (DEFINED BUILD_PI_NEW)
     set(PI_TOOLS_HOME ${CMAKE_CURRENT_SOURCE_DIR}/${DOWNLOAD_DIR}/newer-tools)
     set(CMAKE_TOOLCHAIN_FILE ./raspberry-new.cmake)
 endif()
+if (DEFINED BUILD_PI_64)
+    set(PI_TOOLS_HOME ${CMAKE_CURRENT_SOURCE_DIR}/${DOWNLOAD_DIR}/gcc-linaro-aarch64-linux-gnu)
+    set(CMAKE_TOOLCHAIN_FILE ./raspberry-64.cmake)
+endif()
 
 message(STATUS "Build PI     : ${BUILD_PI}")
 message(STATUS "Build PI New : ${BUILD_PI_NEW}")
+message(STATUS "Build PI 64  : ${BUILD_PI_64}")
 
 # Variable de build
 set(CMAKE_CXX_STANDARD 11)
