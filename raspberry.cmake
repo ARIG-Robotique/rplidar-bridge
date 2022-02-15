@@ -5,14 +5,12 @@
 set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_VERSION 1)
 
-set(XC_DIR arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf)
-
 # specify the cross compiler
-set(CMAKE_C_COMPILER ${PI_TOOLS_HOME}/${XC_DIR}/bin/arm-linux-gnueabihf-gcc)
-set(CMAKE_CXX_COMPILER ${PI_TOOLS_HOME}/${XC_DIR}/bin/arm-linux-gnueabihf-g++)
+set(CMAKE_C_COMPILER ${ARM_CROSS_COMPILER_ROOT}/${ARM_BIN_PREFIX}gcc)
+set(CMAKE_CXX_COMPILER ${ARM_CROSS_COMPILER_ROOT}/${ARM_BIN_PREFIX}g++)
 
 # where is the target environment
-set(CMAKE_FIND_ROOT_PATH ${PI_TOOLS_HOME}/${XC_DIR}/arm-linux-gnueabihf/sysroot)
+set(CMAKE_FIND_ROOT_PATH ${ARM_SYSROOT_DIR})
 SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --sysroot=${CMAKE_FIND_ROOT_PATH}")
 SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} --sysroot=${CMAKE_FIND_ROOT_PATH}")
 SET(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} --sysroot=${CMAKE_FIND_ROOT_PATH}")

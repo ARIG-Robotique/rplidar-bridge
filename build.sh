@@ -6,22 +6,31 @@ PROJECT="ARIG C++ RPLidar Bridge"
 echo "Build du projet ${PROJECT}"
 
 ROOT_DIR=$(pwd)
-BUILD_NAME=build
-BUILD_DIR=${ROOT_DIR}/${BUILD_NAME}
+if [ "${#}" -eq 1 ] ; then
+  BUILD_NAME="${1}"
+else
+  echo "Le nombre d'argument doit etre definie (local, odin ou nerell)"
+  exit 1
+fi
+if [ "${BUILD_NAME}" != "local" ] && [ "${BUILD_NAME}" != "odin" ] && [ "${BUILD_NAME}" != "nerell" ] ; then
+  echo "Le build name doit être local, odin ou nerell"
+  exit 2
+fi
+BUILD_DIR=${ROOT_DIR}/build-${BUILD_NAME}
 
-cd ${ROOT_DIR}
+cd "${ROOT_DIR}" || exit 1
 if [ -d "${BUILD_DIR}" ] ; then
     echo "-- Nettoyage du répertoire de build ${BUILD_DIR}"
-    rm -Rf ${BUILD_DIR}
+    rm -Rf "${BUILD_DIR}"
 fi
 
 echo "-- Création du répertoire de build ${BUILD_DIR}"
-mkdir -p ${BUILD_DIR}
+mkdir -p "${BUILD_DIR}"
+echo "-- Build directory : ${BUILD_DIR}"
+sh download.sh
 
-sh download.sh ${BUILD_NAME}
-
-echo "-- Build du projet $PROJECT"
-cd ${BUILD_DIR}
-cmake .. || exit $?
+echo "-- Build du projet ${PROJECT}"
+cd "${BUILD_DIR}" || exit 1
+cmake .. -DBUILD_NAME="${BUILD_NAME}" || exit ${?}
 cmake --build . || exit $?
 echo "Build terminé"

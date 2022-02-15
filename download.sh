@@ -17,32 +17,10 @@ SPDLOG_VERSION=1.3.1
 SPDLOG_FILENAME=spdlog-${SPDLOG_VERSION}
 SPDLOG_DOWNLOAD_URL=https://github.com/gabime/spdlog/archive/v${SPDLOG_VERSION}.zip
 
-RASPBERRY_TOOLS=https://github.com/raspberrypi/tools.git
-
-NEWER_RPI_TOOLS_VERSION=35ea4148c163f020b70b770a8b56517693682b1b
-NEWER_RPI_TOOLS=https://github.com/rvagg/rpi-newer-crosstools.git
-
-GCC_LINARO_ARM64_FILENAME=gcc-linaro-7.5.0-2019.12-x86_64_aarch64-linux-gnu
-GCC_LINARO_ARM64_DOWNLOAD_URL=https://releases.linaro.org/components/toolchain/binaries/7.5-2019.12/aarch64-linux-gnu/${GCC_LINARO_ARM64_FILENAME}.tar.xz
-
 echo "-- Download external dependencies"
 if [ ! -d "${DOWNLOAD_DIR}" ] ; then
     echo "---- Make download directory : $DOWNLOAD_DIR"
     mkdir -p ${DOWNLOAD_DIR}
-fi
-
-cd ${DOWNLOAD_DIR}
-if [ ! -d "tools" ] ; then
-    echo "---- Clone raspberry-tools ..."
-    git clone --depth=1 ${RASPBERRY_TOOLS}
-fi
-
-cd ${DOWNLOAD_DIR}
-if [ ! -d "newer-tools" ] ; then
-    echo "---- Clone newer raspberry-tools ..."
-    git clone ${NEWER_RPI_TOOLS} newer-tools
-    cd newer-tools
-    git checkout ${NEWER_RPI_TOOLS_VERSION}
 fi
 
 cd ${DOWNLOAD_DIR}
@@ -69,12 +47,4 @@ if [ ! -f "${SPDLOG_FILENAME}.zip" ] ; then
   unzip ${SPDLOG_FILENAME}.zip
 
   ln -s ${SPDLOG_FILENAME}/include spdlog
-fi
-
-cd ${DOWNLOAD_DIR}
-if [ ! -f "${GCC_LINARO_ARM64_FILENAME}.tar.xz" ] ; then
-  echo "---- Download GCC Linaro ARM 64 ${GCC_LINARO_ARM64_FILENAME}"
-  curl -L ${GCC_LINARO_ARM64_DOWNLOAD_URL} -o ${GCC_LINARO_ARM64_FILENAME}.tar.xz
-  tar xvf ${GCC_LINARO_ARM64_FILENAME}.tar.xz
-  ln -s ${GCC_LINARO_ARM64_FILENAME} gcc-linaro-aarch64-linux-gnu
 fi
