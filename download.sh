@@ -8,7 +8,7 @@ RPLIDAR_SDK_DIR=rplidar_sdk
 RPLIDAR_FILENAME=${RPLIDAR_SDK_DIR}_${RPLIDAR_SDK_VERSION}
 RPLIDAR_DOWNLOAD_URL=https://github.com/Slamtec/rplidar_sdk/archive/refs/tags/release/${RPLIDAR_SDK_VERSION}.zip
 
-JSON_VERSION=v2.1.1
+JSON_VERSION=v3.7.3
 JSON_DIR=json-${JSON_VERSION}
 JSON_FILENAME=json.hpp
 JSON_DOWNLOAD_URL=https://github.com/nlohmann/json/releases/download/${JSON_VERSION}/${JSON_FILENAME}

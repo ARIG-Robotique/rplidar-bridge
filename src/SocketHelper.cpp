@@ -1,6 +1,8 @@
 #include "SocketHelper.h"
 
 #include <unistd.h>
+#include <iostream>
+#include <sstream>
 #include <sys/stat.h>
 #include <arpa/inet.h>
 
@@ -83,7 +85,7 @@ void SocketHelper::initSocketInet() {
     // bind() passes file descriptor, the address structure,
     // and the length of the address structure
     // This bind() call will bind the socket to the current IP address on port, portno
-    if (bind(serverSockfd, (struct sockaddr *) &serv_addr_inet, sizeof(serv_addr_inet)) < 0) {
+    if (::bind(serverSockfd, (struct sockaddr *) &serv_addr_inet, sizeof(serv_addr_inet)) < 0) {
         cerr << "Erreur sur bind() INET" << endl;
         throw bad_function_call();
     }
@@ -113,7 +115,7 @@ void SocketHelper::initSocketUnix() {
     // bind() passes file descriptor, the address structure,
     // and the length of the address structure
     // This bind() call will bind the socket to the current IP address on port, portno
-    if (bind(serverSockfd, (struct sockaddr *) &serv_addr_un, sizeof(serv_addr_un)) < 0) {
+    if (::bind(serverSockfd, (struct sockaddr *) &serv_addr_un, sizeof(serv_addr_un)) < 0) {
         cerr << "Erreur sur bind() UNIX" << endl;
         throw bad_function_call();
     }

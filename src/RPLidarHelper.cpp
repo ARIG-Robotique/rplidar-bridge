@@ -2,6 +2,8 @@
 // Created by gregorydepuille@sglk.local on 27/02/17.
 //
 
+#include <iostream>
+#include <sstream>
 #include "RPLidarHelper.h"
 
 RPLidarHelper::RPLidarHelper(string comFile, unsigned int baudrate) {

@@ -1,4 +1,5 @@
 /* RPLIDAR Bridge Application */
+#include <iostream>
 #include "SocketHelper.h"
 #include "RPLidarHelper.h"
 
