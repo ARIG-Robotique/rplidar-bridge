@@ -84,7 +84,7 @@ execute_process(
 
 # Compilation de la lib externe RPLidar #
 #########################################
-set(RPLIDAR_LIB_NAME   "rplidar_sdk")
+set(RPLIDAR_LIB_NAME   "_rplidar_sdk")
 set(RPLIDAR_SDK_DIR    "${DOWNLOAD_DIR}/rplidar_sdk/sdk/sdk")
 
 file(GLOB RPLIDAR_SRCS
@@ -101,6 +101,15 @@ include_directories(
 )
 add_library(${RPLIDAR_LIB_NAME} STATIC ${RPLIDAR_SRCS})
 
+# Compilation de la lib externe LD19 Lidar #
+############################################
+set(LDLIDAR_LIB_NAME   "_ldlidar_sdk")
+set(LDLIDAR_SDK_DIR    "${DOWNLOAD_DIR}/ldlidar_sdk/include/ldlidar_driver")
+
+file(GLOB LDLIDAR_SRCS "${LDLIDAR_SDK_DIR}/*.cpp")
+include_directories("${LDLIDAR_SDK_DIR}/include/")
+add_library(${LDLIDAR_LIB_NAME} STATIC ${LDLIDAR_SRCS})
+
 # Récupération de la définition pour JSON #
 ###########################################
 set(JSON_LIB_DIR "${DOWNLOAD_DIR}/json")
@@ -113,8 +122,8 @@ include_directories(${SPDLOG_LIB_DIR})
 
 # Récupération des sources du projet principale #
 #################################################
-file(GLOB SRCS "src/*.cpp")
-file(GLOB HEADERS "src/*.h")
+file(GLOB_RECURSE SRCS "src/*.cpp")
+file(GLOB_RECURSE HEADERS "src/*.h")
 
 add_executable(${PROJECT_NAME} ${SRCS} ${HEADERS})
-target_link_libraries(${PROJECT_NAME} ${RPLIDAR_LIB_NAME} pthread)
+target_link_libraries(${PROJECT_NAME} ${RPLIDAR_LIB_NAME} ${LDLIDAR_LIB_NAME} pthread)

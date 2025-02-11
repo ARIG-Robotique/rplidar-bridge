@@ -8,6 +8,11 @@ RPLIDAR_SDK_DIR=rplidar_sdk
 RPLIDAR_FILENAME=${RPLIDAR_SDK_DIR}_${RPLIDAR_SDK_VERSION}
 RPLIDAR_DOWNLOAD_URL=https://github.com/Slamtec/rplidar_sdk/archive/refs/tags/release/${RPLIDAR_SDK_VERSION}.zip
 
+LD19LIDAR_SDK_VERSION=v2.3.1
+LD19LIDAR_SDK_DIR=ldlidar_sdk
+LD19LIDAR_FILENAME=${LD19LIDAR_SDK_DIR}_${LD19LIDAR_SDK_VERSION}
+LD19LIDAR_DOWNLOAD_URL=https://raw.githubusercontent.com/May-DFRobot/DFRobot/refs/heads/master/LD19_SDK.zip
+
 JSON_VERSION=v3.7.3
 JSON_DIR=json-${JSON_VERSION}
 JSON_FILENAME=json.hpp
@@ -29,6 +34,19 @@ if [ ! -f "${RPLIDAR_FILENAME}.zip" ] ; then
   curl -L ${RPLIDAR_DOWNLOAD_URL} -o ${RPLIDAR_FILENAME}.zip
   unzip ${RPLIDAR_FILENAME}.zip
   ln -s rplidar_sdk-release-${RPLIDAR_SDK_VERSION} ${RPLIDAR_SDK_DIR}
+fi
+
+cd ${DOWNLOAD_DIR}
+if [ ! -f "${LD19LIDAR_FILENAME}.zip" ] ; then
+  echo "---- Download LD19 Lidar SDK ${LD19LIDAR_SDK_VERSION} ..."
+  curl -L ${LD19LIDAR_DOWNLOAD_URL} -o ${LD19LIDAR_FILENAME}.zip
+  unzip ${LD19LIDAR_FILENAME}.zip
+  mv LD19_SDK/Linux/ldlidar_stl_sdk.zip .
+  rm -Rf LD19_SDK
+  unzip ldlidar_stl_sdk.zip
+  rm -f ldlidar_stl_sdk.zip
+  mv ldlidar_stl_sdk ldlidar_sdk-release-${LD19LIDAR_SDK_VERSION}
+  ln -s ldlidar_sdk-release-${LD19LIDAR_SDK_VERSION} ${LD19LIDAR_SDK_DIR}
 fi
 
 cd ${DOWNLOAD_DIR}
