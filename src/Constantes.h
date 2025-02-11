@@ -2,6 +2,10 @@
 // Created by gregorydepuille@sglk.local on 28/02/17.
 //
 
+#ifndef _countof
+#define _countof(_Array) (int)(sizeof(_Array) / sizeof(_Array[0]))
+#endif
+
 #ifndef RPLIDAR_BRIDGE_CONSTANTES_H
 #define RPLIDAR_BRIDGE_CONSTANTES_H
 
@@ -20,8 +24,9 @@ using json = nlohmann::json;
 #define DATA_INVALID    "DATA_INVALID"
 #define DATA_UNPARSABLE "DATA_UNPARSABLE"
 
-#define RESPONSE_OK     "OK"
-#define RESPONSE_ERROR  "ERROR"
+#define RESPONSE_OK                 "OK"
+#define RESPONSE_ERROR              "ERROR"
+#define RESPONSE_NOT_IMPLEMENTED    "NOT_IMPLEMENTED"
 
 struct JsonResult {
     std::string status;

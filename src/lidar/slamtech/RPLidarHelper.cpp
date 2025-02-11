@@ -6,11 +6,6 @@
 #include <sstream>
 #include "RPLidarHelper.h"
 
-RPLidarHelper::RPLidarHelper(string comFile, unsigned int baudrate) {
-    this->comFile = comFile;
-    this->baudrate = baudrate;
-}
-
 void RPLidarHelper::init() {
     // create the driver instance
     this->driver = RPlidarDriver::CreateDriver(DRIVER_TYPE_SERIALPORT);
@@ -30,6 +25,13 @@ void RPLidarHelper::init() {
         cerr << "Error, cannot get all supported scan modes";
         exit(4);
     }
+}
+
+void RPLidarHelper::end() {
+    this->stopScan();
+    this->driver->disconnect();
+
+    RPlidarDriver::DisposeDriver(this->driver);
 }
 
 JsonResult RPLidarHelper::getDeviceInfo() {
@@ -210,11 +212,4 @@ JsonResult RPLidarHelper::grabScanData() {
     }
 
     return r;
-}
-
-void RPLidarHelper::end() {
-    this->stopScan();
-    this->driver->disconnect();
-
-    RPlidarDriver::DisposeDriver(this->driver);
 }
