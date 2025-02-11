@@ -1,10 +1,12 @@
-# Bridge C++ avec le driver RPLidar
+# Bridge C++ avec les drivers Lidar
 [![Build Status](https://travis-ci.org/ARIG-Robotique/rplidar-bridge.svg?branch=master)](https://travis-ci.org/ARIG-Robotique/rplidar-bridge)
 
 ## Description
 
-Ce projet ouvre un socket TCP sur le port 50000 afin de recevoir des ordres
-JSON pour piloter le [RPLidar](http://www.slamtec.com/en/Lidar)
+Ce projet ouvre une socket TCP (inet ou unix) afin de recevoir des ordres
+JSON pour piloter les lidars :
+ - [RPLidar](http://www.slamtec.com/en/Lidar)
+ - [LD19Lidar](https://www.gotronic.fr/art-capteur-de-distance-lidar-ld19-35884.htm)
 
 ## Messages JSON
 
