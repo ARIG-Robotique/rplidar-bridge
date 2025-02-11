@@ -25,6 +25,7 @@ JSON pour piloter les lidars :
   "status": "OK",
   "action": "DEVICE_INFO",
   "datas": {
+    "driver": "rplidar",
     "firmwareVersion": "1.20",
     "hardwareVersion": 2,
     "serialNumber": "123456ABCDEF"

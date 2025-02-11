@@ -62,6 +62,7 @@ JsonResult RPLidarHelper::getDeviceInfo() {
     }
 
     json data;
+    data["driver"] = "rplidar";
     data["serialNumber"] = serialStream.str();
     data["hardwareVersion"] = deviceInfo.hardware_version;
     data["firmwareVersion"] = firmStream.str();
