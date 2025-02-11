@@ -28,6 +28,8 @@ public:
     JsonResult grabScanData() override;
 
 private:
+    const uint16_t MAX_MOTOR_PWM = 1023;
+
     RPlidarDriver * driver;
     vector<RplidarScanMode> scanModes;
     u_result setMotorSpeed(_u16 speed);
