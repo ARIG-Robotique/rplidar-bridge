@@ -93,6 +93,6 @@ int main(int argc, const char **argv) {
 }
 
 void printUsage() {
-    cerr << "Usage socket unix : rplidar_bridge unix /tmp/socket.sock [debug]" << endl;
-    cerr << "Usage socket inet : rplidar_bridge inet 8686 [debug]" << endl;
+    cerr << "Usage socket unix : lidar_bridge unix /tmp/socket.sock rplidar|ldlidar [debug]" << endl;
+    cerr << "Usage socket inet : lidar_bridge inet 8686 rplidar|ldlidar [debug]" << endl;
 }
